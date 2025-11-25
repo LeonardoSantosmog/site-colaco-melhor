@@ -1,0 +1,196 @@
+{% extends "admin/base_admin.html" %}
+
+{% block admin_title %}Dashboard Administrativo{% endblock %}
+
+{% block admin_actions %}
+<div class="btn-group me-2">
+    <a href="{{ url_for('cadastrar_aluno') }}" class="btn btn-sm btn-success">
+        <i class="fas fa-plus me-1"></i>Novo Aluno
+    </a>
+    <a href="{{ url_for('cadastrar_noticia') }}" class="btn btn-sm btn-primary">
+        <i class="fas fa-newspaper me-1"></i>Nova Notícia
+    </a>
+</div>
+{% endblock %}
+
+{% block admin_content %}
+<!-- Estatísticas -->
+<div class="row mb-4">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stat-card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Total de Alunos
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_alunos }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-user-graduate fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stat-card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            Professores
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_professores }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-chalkboard-teacher fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stat-card border-left-info shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                            Disciplinas
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_disciplinas }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-book fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stat-card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                            Notícias
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_noticias }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-newspaper fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Últimos Alunos Cadastrados -->
+    <div class="col-xl-6 col-lg-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Últimos Alunos Cadastrados</h6>
+                <a href="{{ url_for('admin_alunos') }}" class="btn btn-sm btn-outline-primary">Ver Todos</a>
+            </div>
+            <div class="card-body">
+                {% if ultimos_alunos %}
+                <div class="table-responsive">
+                    <table class="table table-sm table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Usuário</th>
+                                <th>Data</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for aluno in ultimos_alunos %}
+                            <tr>
+                                <td>{{ aluno.nome }}</td>
+                                <td>{{ aluno.username }}</td>
+                                <td>{{ aluno.created_at|format_date }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted text-center py-3">Nenhum aluno cadastrado.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Notícias Recentes -->
+    <div class="col-xl-6 col-lg-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Notícias Recentes</h6>
+                <a href="{{ url_for('admin_noticias') }}" class="btn btn-sm btn-outline-primary">Ver Todas</a>
+            </div>
+            <div class="card-body">
+                {% if noticias %}
+                <div class="list-group list-group-flush">
+                    {% for noticia in noticias %}
+                    <div class="list-group-item px-0">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">{{ noticia.titulo }}</h6>
+                            <small>{{ noticia.data_publicacao|format_date }}</small>
+                        </div>
+                        <p class="mb-1 small text-muted">{{ noticia.conteudo[:80] }}...</p>
+                        <small class="text-muted">Por: {{ noticia.autor_nome }}</small>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted text-center py-3">Nenhuma notícia publicada.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ações Rápidas -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card shadow">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Ações Rápidas</h6>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-3 mb-3">
+                        <a href="{{ url_for('cadastrar_aluno') }}" class="btn btn-outline-primary btn-lg p-3 w-100">
+                            <i class="fas fa-user-plus fa-2x mb-2"></i><br>
+                            Cadastrar Aluno
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <a href="{{ url_for('cadastrar_noticia') }}" class="btn btn-outline-success btn-lg p-3 w-100">
+                            <i class="fas fa-newspaper fa-2x mb-2"></i><br>
+                            Nova Notícia
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <a href="{{ url_for('admin_alunos') }}" class="btn btn-outline-info btn-lg p-3 w-100">
+                            <i class="fas fa-list fa-2x mb-2"></i><br>
+                            Listar Alunos
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <a href="{{ url_for('admin_noticias') }}" class="btn btn-outline-warning btn-lg p-3 w-100">
+                            <i class="fas fa-newspaper fa-2x mb-2"></i><br>
+                            Gerenciar Notícias
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block title %}Área do Aluno - Escola Colaço{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-5">
+                <h1><i class="fas fa-user-graduate me-3"></i>Área do Aluno</h1>
+                <div class="text-end">
+                    <span class="badge bg-primary fs-6">Aluno</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Informações do Aluno -->
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-id-card me-2"></i>Meus Dados
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center" 
+                             style="width: 80px; height: 80px;">
+                            <i class="fas fa-user fa-2x text-white"></i>
+                        </div>
+                    </div>
+                    <h5 class="text-center">{{ aluno.nome }}</h5>
+                    <div class="student-info mt-4">
+                        <p><strong><i class="fas fa-user me-2"></i>Usuário:</strong> {{ aluno.username }}</p>
+                        <p><strong><i class="fas fa-envelope me-2"></i>Email:</strong> {{ aluno.email or 'Não informado' }}</p>
+                        <p><strong><i class="fas fa-phone me-2"></i>Telefone:</strong> {{ aluno.telefone or 'Não informado' }}</p>
+                        {% if aluno.data_nascimento %}
+                        <p><strong><i class="fas fa-birthday-cake me-2"></i>Data Nasc.:</strong> {{ aluno.data_nascimento|format_date }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Matrículas e Disciplinas -->
+        <div class="col-lg-8 mb-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-success text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-book me-2"></i>Minhas Disciplinas
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if matriculas %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Disciplina</th>
+                                        <th>Professor</th>
+                                        <th>Data Matrícula</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for matricula in matriculas %}
+                                    <tr>
+                                        <td>
+                                            <strong>{{ matricula.nome }}</strong>
+                                            {% if matricula.descricao %}
+                                            <br><small class="text-muted">{{ matricula.descricao }}</small>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ matricula.professor_nome }}</td>
+                                        <td>{{ matricula.data_matricula|format_date }}</td>
+                                        <td>
+                                            <span class="badge bg-success">Ativo</span>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-book-open fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">Nenhuma disciplina matriculada</h5>
+                            <p class="text-muted">Entre em contato com a secretaria para regularizar sua matrícula.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notícias Recentes -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-newspaper me-2"></i>Notícias Recentes
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if noticias %}
+                        <div class="row">
+                            {% for noticia in noticias %}
+                            <div class="col-md-6 mb-3">
+                                <div class="card border-0 bg-light">
+                                    <div class="card-body">
+                                        <h6 class="card-title">{{ noticia.titulo }}</h6>
+                                        <p class="card-text small text-muted">
+                                            {{ noticia.conteudo[:100] }}...
+                                        </p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <small class="text-muted">
+                                                <i class="fas fa-calendar me-1"></i>
+                                                {{ noticia.data_publicacao|format_date }}
+                                            </small>
+                                            <a href="{{ url_for('noticia_detalhe', noticia_id=noticia.id) }}" 
+                                               class="btn btn-sm btn-outline-primary">Ler</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted text-center py-3">Nenhuma notícia recente.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Avisos Importantes -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card border-warning">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Avisos Importantes
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning mb-0">
+                        <h6><i class="fas fa-info-circle me-2"></i>Atualização de Dados</h6>
+                        <p class="mb-2">Mantenha seus dados cadastrais sempre atualizados na secretaria da escola.</p>
+                        <small class="text-muted">Última atualização: {{ current_year }}-01-01</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.student-info p {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.student-info p:last-child {
+    border-bottom: none;
+}
+</style>
+{% endblock %}

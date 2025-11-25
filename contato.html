@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Contato - Escola Colaço{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="text-center mb-5">Entre em Contato</h1>
+
+            <div class="row mb-5">
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-map-marker-alt fa-2x text-primary mb-3"></i>
+                            <h5>Endereço</h5>
+                            <p class="text-muted">
+                                Rua da Educação, 123<br>
+                                Jardim do Conhecimento<br>
+                                São Paulo - SP<br>
+                                CEP: 01234-567
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-phone fa-2x text-primary mb-3"></i>
+                            <h5>Telefone</h5>
+                            <p class="text-muted">
+                                (11) 1234-5678<br>
+                                (11) 98765-4321
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-envelope fa-2x text-primary mb-3"></i>
+                            <h5>Email</h5>
+                            <p class="text-muted">
+                                contato@escolacolaco.com<br>
+                                secretaria@escolacolaco.com
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-clock fa-2x text-primary mb-3"></i>
+                            <h5>Horário de Funcionamento</h5>
+                            <p class="text-muted">
+                                Segunda a Sexta: 7h às 18h<br>
+                                Sábado: 8h às 12h
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-body p-5">
+                    <h3 class="card-title mb-4">Envie sua Mensagem</h3>
+                    <form method="POST" action="{{ url_for('contato') }}">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="nome" class="form-label">Nome Completo *</label>
+                                <input type="text" class="form-control" id="nome" name="nome" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email *</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="assunto" class="form-label">Assunto</label>
+                            <input type="text" class="form-control" id="assunto" name="assunto">
+                        </div>
+                        <div class="mb-3">
+                            <label for="mensagem" class="form-label">Mensagem *</label>
+                            <textarea class="form-control" id="mensagem" name="mensagem" rows="5" required></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-paper-plane me-2"></i>Enviar Mensagem
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="mt-5">
+                <div class="card border-0">
+                    <div class="card-body p-4 text-center bg-light">
+                        <h5 class="card-title">Nos Encontre</h5>
+                        <p class="card-text text-muted mb-4">
+                            Venha nos fazer uma visita e conhecer nossa estrutura
+                        </p>
+                        <div class="bg-white p-3 rounded shadow-sm">
+                            <i class="fas fa-map-marked-alt fa-3x text-primary mb-3"></i>
+                            <p class="mb-0">
+                                <strong>Escola Colaço</strong><br>
+                                Rua da Educação, 123 - Jardim do Conhecimento<br>
+                                São Paulo - SP
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

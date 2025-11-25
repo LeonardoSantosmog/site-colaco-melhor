@@ -1,0 +1,70 @@
+{% extends "admin/base_admin.html" %}
+
+{% block admin_title %}Gerenciar Professores{% endblock %}
+
+{% block admin_content %}
+<div class="card shadow">
+    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+        <h6 class="m-0 font-weight-bold text-primary">Lista de Professores</h6>
+        <span class="badge bg-primary">{{ professores|length }} professor(es)</span>
+    </div>
+    <div class="card-body">
+        {% if professores %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Usuário</th>
+                        <th>Email</th>
+                        <th>Telefone</th>
+                        <th>Data Cadastro</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for professor in professores %}
+                    <tr>
+                        <td>{{ professor.id }}</td>
+                        <td>
+                            <strong>{{ professor.nome }}</strong>
+                            <br><small class="text-muted">Professor</small>
+                        </td>
+                        <td>{{ professor.username }}</td>
+                        <td>{{ professor.email or '-' }}</td>
+                        <td>{{ professor.telefone or '-' }}</td>
+                        <td>{{ professor.created_at|format_date }}</td>
+                        <td>
+                            {% if professor.ativo %}
+                            <span class="badge bg-success">Ativo</span>
+                            {% else %}
+                            <span class="badge bg-danger">Inativo</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <i class="fas fa-chalkboard-teacher fa-4x text-muted mb-3"></i>
+            <h4 class="text-muted">Nenhum professor cadastrado</h4>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card mt-4 border-warning">
+    <div class="card-body">
+        <h6 class="card-title text-warning">
+            <i class="fas fa-exclamation-triangle me-2"></i>Acesso Restrito
+        </h6>
+        <p class="mb-0 text-muted">
+            O cadastro de professores é restrito ao administrador do sistema. 
+            Entre em contato com o administrador para adicionar novos professores.
+        </p>
+    </div>
+</div>
+{% endblock %}

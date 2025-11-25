@@ -1,0 +1,73 @@
+{% extends "admin/base_admin.html" %}
+
+{% block admin_title %}Publicar Nova Notícia{% endblock %}
+
+{% block admin_content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card shadow">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="fas fa-newspaper me-2"></i>Publicar Nova Notícia
+                </h6>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('cadastrar_noticia') }}">
+                    <div class="mb-3">
+                        <label for="titulo" class="form-label">Título da Notícia *</label>
+                        <input type="text" class="form-control" id="titulo" name="titulo" 
+                               value="{{ request.form.titulo or '' }}" required
+                               placeholder="Digite o título da notícia">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="conteudo" class="form-label">Conteúdo *</label>
+                        <textarea class="form-control" id="conteudo" name="conteudo" 
+                                  rows="12" required placeholder="Digite o conteúdo da notícia...">{{ request.form.conteudo or '' }}</textarea>
+                        <div class="form-text">
+                            Dica: Use parágrafos separados por linhas em branco para melhor formatação.
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="destaque" name="destaque"
+                                   {{ 'checked' if request.form.destaque }}>
+                            <label class="form-check-label" for="destaque">
+                                Marcar como notícia em destaque
+                            </label>
+                        </div>
+                        <div class="form-text">
+                            Notícias em destaque aparecem na página inicial do site.
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('admin_noticias') }}" class="btn btn-secondary me-md-2">
+                            <i class="fas fa-arrow-left me-2"></i>Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane me-2"></i>Publicar Notícia
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card mt-4 border-info">
+            <div class="card-body">
+                <h6 class="card-title text-info">
+                    <i class="fas fa-lightbulb me-2"></i>Dicas para uma Boa Notícia
+                </h6>
+                <ul class="small text-muted mb-0">
+                    <li>Escreva um título claro e atrativo</li>
+                    <li>Comece com as informações mais importantes</li>
+                    <li>Use parágrafos curtos para facilitar a leitura</li>
+                    <li>Inclua todas as informações relevantes: data, local, horário</li>
+                    <li>Revise o texto antes de publicar</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

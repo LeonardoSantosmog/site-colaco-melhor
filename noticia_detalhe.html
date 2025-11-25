@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}{{ noticia.titulo }} - Escola Colaço{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Início</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('noticias') }}">Notícias</a></li>
+                    <li class="breadcrumb-item active">{{ noticia.titulo[:30] }}...</li>
+                </ol>
+            </nav>
+
+            <article class="card shadow-sm border-0">
+                {% if noticia.imagem %}
+                <img src="{{ url_for('static', filename='uploads/' + noticia.imagem) }}" 
+                     class="card-img-top" alt="{{ noticia.titulo }}">
+                {% endif %}
+                <div class="card-body p-5">
+                    <header class="mb-4">
+                        {% if noticia.destaque %}
+                        <span class="badge bg-warning mb-2">Destaque</span>
+                        {% endif %}
+                        <h1 class="card-title h2">{{ noticia.titulo }}</h1>
+                        <div class="d-flex align-items-center text-muted mb-3">
+                            <i class="fas fa-user me-2"></i>
+                            <span class="me-3">{{ noticia.autor_nome }}</span>
+                            <i class="fas fa-calendar me-2"></i>
+                            <span>{{ noticia.data_publicacao|format_date }}</span>
+                        </div>
+                    </header>
+
+                    <div class="card-text news-content">
+                        {{ noticia.conteudo|replace('\n', '<br>')|safe }}
+                    </div>
+
+                    <footer class="mt-5 pt-4 border-top">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="{{ url_for('noticias') }}" class="btn btn-outline-primary">
+                                <i class="fas fa-arrow-left me-2"></i>Voltar para Notícias
+                            </a>
+                            <div class="text-muted small">
+                                <i class="fas fa-eye me-1"></i>
+                                Publicado em {{ noticia.data_publicacao|format_date('%d/%m/%Y às %H:%M') }}
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </article>
+        </div>
+    </div>
+</div>
+
+<style>
+.news-content {
+    line-height: 1.8;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.news-content br {
+    margin-bottom: 1rem;
+}
+</style>
+{% endblock %}
